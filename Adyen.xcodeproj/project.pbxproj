@@ -126,6 +126,7 @@
 		E7D18A0525D44610006AD3B7 /* IntegrationExampleDropIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D18A0325D44610006AD3B7 /* IntegrationExampleDropIn.swift */; };
 		E7D18A1025D44769006AD3B7 /* IntegrationExampleComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D18A0F25D44769006AD3B7 /* IntegrationExampleComponents.swift */; };
 		E7D18A1125D44769006AD3B7 /* IntegrationExampleComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D18A0F25D44769006AD3B7 /* IntegrationExampleComponents.swift */; };
+		E7D18AC825D6B22C006AD3B7 /* StoredPaymentMethodDeletionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D18AC725D6B22C006AD3B7 /* StoredPaymentMethodDeletionRequest.swift */; };
 		E7D3ED84243B667500E73F59 /* FormCardNumberItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D3ED83243B667500E73F59 /* FormCardNumberItemViewTests.swift */; };
 		E7D5311424462D87000046B4 /* FormButtonItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D5311124462D87000046B4 /* FormButtonItemView.swift */; };
 		E7D5311524462D87000046B4 /* FormButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D5311224462D87000046B4 /* FormButtonItem.swift */; };
@@ -869,6 +870,7 @@
 		E7D189AF25D31936006AD3B7 /* DropInActionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInActionTests.swift; sourceTree = "<group>"; };
 		E7D18A0325D44610006AD3B7 /* IntegrationExampleDropIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegrationExampleDropIn.swift; sourceTree = "<group>"; };
 		E7D18A0F25D44769006AD3B7 /* IntegrationExampleComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegrationExampleComponents.swift; sourceTree = "<group>"; };
+		E7D18AC725D6B22C006AD3B7 /* StoredPaymentMethodDeletionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredPaymentMethodDeletionRequest.swift; sourceTree = "<group>"; };
 		E7D3ED83243B667500E73F59 /* FormCardNumberItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardNumberItemViewTests.swift; sourceTree = "<group>"; };
 		E7D5311124462D87000046B4 /* FormButtonItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormButtonItemView.swift; sourceTree = "<group>"; };
 		E7D5311224462D87000046B4 /* FormButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormButtonItem.swift; sourceTree = "<group>"; };
@@ -1563,8 +1565,8 @@
 				F9175E56259393E800D653BE /* AdyenComponents */,
 				E9B36CAC2243B2FE00EAA368 /* AdyenDropIn */,
 				F9620D8323C73B0D005209FC /* AdyenWeChatPay */,
-				E7E58BF825ADDFA000E869F9 /* Tests */,
 				E7E58BF725ADDF8400E869F9 /* Demo */,
+				E7E58BF825ADDFA000E869F9 /* Tests */,
 				E2C0E03422097917008616F6 /* Products */,
 				E2D12C01221ECBB000EF682F /* Frameworks */,
 			);
@@ -1868,6 +1870,7 @@
 				E95E24AE22C1155A00973184 /* Request.swift */,
 				F9639B3224DD96990073F38A /* PaymentStatusRequest.swift */,
 				F919DF8E24E682250027976E /* ClientKeyRequest.swift */,
+				E7D18AC725D6B22C006AD3B7 /* StoredPaymentMethodDeletionRequest.swift */,
 			);
 			path = Requests;
 			sourceTree = "<group>";
@@ -3642,6 +3645,7 @@
 				F9D644DE24D2D9950059CBE3 /* MBWayPaymentMethod.swift in Sources */,
 				E216D3C3221AEDBE0013CBCF /* Formatter.swift in Sources */,
 				F9B798CB23AB706D00A2103C /* ListComponentStyle.swift in Sources */,
+				E7D18AC825D6B22C006AD3B7 /* StoredPaymentMethodDeletionRequest.swift in Sources */,
 				E2B3C216233507030067891D /* UIColorHelpers.swift in Sources */,
 				F9AC61C624376C9B0062A00D /* AdyenScope.swift in Sources */,
 				F96F44D923BDEDA200871C1F /* ListItemStyle.swift in Sources */,
