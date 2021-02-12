@@ -6,9 +6,20 @@
 
 import UIKit
 
+/// Delegate interaction with elements of the list.
+/// :nodoc:
+public protocol InteractionDelegate: AnyObject {
+
+    /// Get permission from delegate to delete item at specific position.
+    func controllerShouldDelete(item: ListItem, at position: IndexPath) -> Bool
+
+}
+
 /// Displays a list from which items can be selected.
 /// :nodoc:
 public final class ListViewController: UITableViewController {
+
+    public weak var interactionDelegate: InteractionDelegate?
     
     /// Indicates the list view controller UI style.
     public let style: ListComponentStyle
@@ -26,6 +37,7 @@ public final class ListViewController: UITableViewController {
     }
     
     /// :nodoc:
+    @available(*, unavailable)
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -108,12 +120,12 @@ public final class ListViewController: UITableViewController {
     
     /// :nodoc:
     override public func numberOfSections(in tableView: UITableView) -> Int {
-        return sections.count
+        sections.count
     }
     
     /// :nodoc:
     override public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sections[section].items.count
+        sections[section].items.count
     }
     
     /// :nodoc:
@@ -131,7 +143,7 @@ public final class ListViewController: UITableViewController {
     
     /// :nodoc:
     override public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return sections[section].title == nil ? 0 : 44.0
+        sections[section].title == nil ? 0 : 44.0
     }
     
     /// :nodoc:
@@ -151,6 +163,27 @@ public final class ListViewController: UITableViewController {
         
         let item = sections[indexPath.section].items[indexPath.item]
         item.selectionHandler?()
+    }
+
+    // MARK: Delete
+
+    override public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        sections[indexPath.section].allowDelete
+    }
+
+    override public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let item = self.sections[indexPath.section].items[indexPath.row]
+        return [UITableViewRowAction(style: .destructive, title: "Forget") { [weak self] _, indexPath in
+            guard let self = self, self.interactionDelegate?.controllerShouldDelete(item: item, at: indexPath) == true else {
+                return
+            }
+
+            if self.sections[indexPath.section].items.count == 1 {
+                self.sections.remove(at: indexPath.section)
+            } else {
+                self.sections[indexPath.section].items.remove(at: indexPath.row)
+            }
+        }]
     }
     
     // MARK: Private

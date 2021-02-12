@@ -62,7 +62,8 @@ internal final class PaymentMethodListComponent: LoadingComponent, Localizable {
             return listItem
         }
         
-        let storedSection = ListSection(items: components.stored.map(item(for:)))
+        var storedSection = ListSection(items: components.stored.map(item(for:)))
+        storedSection.allowDelete = true
         let regularSectionTitle = components.stored.isEmpty ? nil : ADYLocalizedString("adyen.paymentMethods.otherMethods",
                                                                                        localizationParameters)
         let regularSection = ListSection(title: regularSectionTitle,
@@ -86,7 +87,7 @@ internal final class PaymentMethodListComponent: LoadingComponent, Localizable {
     ///
     /// - Parameter component: The component for which to start a loading animation.
     internal func startLoading(for component: PaymentComponent) {
-        let allListItems = listViewController.sections.flatMap { $0.items }
+        let allListItems = listViewController.sections.flatMap(\.items)
         let allComponents = [components.stored, components.regular].flatMap { $0 }
         
         guard let index = allComponents.firstIndex(where: { $0 === component }) else {

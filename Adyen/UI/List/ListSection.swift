@@ -9,6 +9,10 @@ import Foundation
 /// A section of items in a ListViewController.
 /// :nodoc:
 public struct ListSection {
+
+    /// The flag allowing section to have "slide-to-delete" feature.
+    public var allowDelete: Bool = false
+
     /// The title of the section.
     public var title: String?
     
