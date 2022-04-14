@@ -10,7 +10,7 @@ import UIKit
     import AdyenEncryption
 #endif
 
-protocol CardViewControllerProtocol {
+internal protocol CardViewControllerProtocol {
     func update(storePaymentMethodFieldVisibility isVisible: Bool)
 }
 
@@ -301,8 +301,7 @@ extension FormValueItem where ValueType == String {
 
 extension CardViewController: CardViewControllerProtocol {
     func update(storePaymentMethodFieldVisibility isVisible: Bool) {
-        guard var storeDetailsItem = items.storeDetailsItem as? Hidable else { return }
         items.storeDetailsItem.value = false
-        storeDetailsItem.isVisible = isVisible
+        items.storeDetailsItem.isVisible = isVisible
     }
 }
