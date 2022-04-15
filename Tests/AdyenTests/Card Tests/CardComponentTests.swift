@@ -22,7 +22,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue((navigationViewController.topViewController as! WrapperViewController).requiresKeyboardInput)
     }
 
-    func testLocalizationWithCustomTableName() {
+    func testLocalizationWithCustomTableName() throws {
         let method = CardPaymentMethodMock(type: .card, name: "test_name", brands: ["bcmc"])
         let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "BE")
         var configuration = CardComponent.Configuration()
@@ -32,7 +32,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
                                 configuration: configuration)
-        sut.payment = payment
+        try sut.update(payment: payment)
         var items = sut.cardViewController.items
 
         XCTAssertEqual(items.expiryDateItem.title, localizedString(.cardExpiryItemTitle, nil))
@@ -52,7 +52,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(items.button.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.configuration.localizationParameters))
     }
 
-    func testLocalizationWithCustomKeySeparator() {
+    func testLocalizationWithCustomKeySeparator() throws {
         let method = CardPaymentMethodMock(type: .card, name: "test_name", brands: ["bcmc"])
         let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "BE")
         var configuration = CardComponent.Configuration()
@@ -62,7 +62,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
                                 configuration: configuration)
-        sut.payment = payment
+        try sut.update(payment: payment)
 
         var items = sut.cardViewController.items
         XCTAssertEqual(items.expiryDateItem.title, localizedString(.cardExpiryItemTitle, nil))
@@ -457,7 +457,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(vc?.actions[1].title, "Pay")
     }
 
-    func testStoredCardPaymentWithPayment() {
+    func testStoredCardPaymentWithPayment() throws {
         let method = StoredCardPaymentMethod(type: .card,
                                              name: "name",
                                              identifier: "id",
@@ -470,7 +470,7 @@ class CardComponentTests: XCTestCase {
                                              holderName: "holderName")
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context)
-        sut.payment = Payment(amount: Amount(value: 123456, currencyCode: "EUR"), countryCode: "NL")
+        try sut.update(payment: Payment(amount: Amount(value: 123456, currencyCode: "EUR"), countryCode: "NL"))
         XCTAssertNotNil(sut.storedCardComponent)
         XCTAssertNotNil(sut.storedCardComponent as? StoredCardComponent)
         XCTAssertTrue(sut.storedCardComponent?.viewController is UIAlertController)
@@ -481,7 +481,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(vc?.actions[1].title, "Pay €1,234.56")
     }
 
-    func testStoredCardPaymentWithNoCVV() {
+    func testStoredCardPaymentWithNoCVV() throws {
         let method = StoredCardPaymentMethod(type: .card,
                                              name: "name",
                                              identifier: "id",
@@ -497,7 +497,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
                                 configuration: configuration)
-        sut.payment = Payment(amount: Amount(value: 123456, currencyCode: "EUR"), countryCode: "NL")
+        try sut.update(payment: Payment(amount: Amount(value: 123456, currencyCode: "EUR"), countryCode: "NL"))
         XCTAssertNotNil(sut.storedCardComponent)
         XCTAssertNotNil(sut.storedCardComponent as? StoredPaymentMethodComponent)
         XCTAssertTrue(sut.storedCardComponent?.viewController is UIAlertController)
@@ -784,7 +784,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
                                 configuration: config)
-        sut.payment = .init(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "NL")
+        try sut.update(payment: .init(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "NL"))
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         // When
@@ -840,7 +840,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
                                 configuration: config)
-        sut.payment = .init(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "US")
+        try sut.update(payment: .init(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "US"))
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         // When
@@ -883,14 +883,14 @@ class CardComponentTests: XCTestCase {
         XCTAssertFalse(postalCodeItemView.alertLabel.isHidden)
     }
 
-    func testAddressUK() {
+    func testAddressUK() throws {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         var config = CardComponent.Configuration()
         config.billingAddressMode = .full
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
                                 configuration: config)
-        sut.payment = .init(amount: Amount(value: 100, currencyCode: "GBP"), countryCode: "GB")
+        try sut.update(payment: .init(amount: Amount(value: 100, currencyCode: "GBP"), countryCode: "GB"))
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         wait(for: .seconds(1))
@@ -923,7 +923,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
                                 configuration: config)
-        sut.payment = .init(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "CA")
+        try sut.update(payment: .init(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "CA"))
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         wait(for: .seconds(1))
@@ -971,7 +971,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(apartmentSuiteItemView.titleLabel.text, "Apartment / Suite (optional)")
     }
 
-    func testPostalCode() {
+    func testPostalCode() throws {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         var config = CardComponent.Configuration()
         config.billingAddressMode = .postalCode
@@ -980,7 +980,7 @@ class CardComponentTests: XCTestCase {
                                 configuration: config,
                                 publicKeyProvider: PublicKeyProviderMock(),
                                 binProvider: BinInfoProviderMock())
-        sut.payment = .init(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "US")
+        try sut.update(payment: .init(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "US"))
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         let delegate = PaymentComponentDelegateMock()
@@ -1843,7 +1843,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(postalCode.isEmpty)
     }
     
-    func testAddressWithSupportedCountries() {
+    func testAddressWithSupportedCountries() throws {
         let method = CardPaymentMethod(type: .card, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         var config = CardComponent.Configuration()
         config.billingAddressMode = .full
@@ -1853,7 +1853,7 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context,
                                 configuration: config)
         
-        sut.payment = .init(amount: Amount(value: 100, currencyCode: "GBP"), countryCode: "GB")
+        try sut.update(payment: .init(amount: Amount(value: 100, currencyCode: "GBP"), countryCode: "GB"))
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         wait(for: .seconds(1))
@@ -1864,7 +1864,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(countryItemView?.inputControl.label, "United Kingdom")
     }
     
-    func testAddressWithSupportedCountriesWithMatchingPrefill() {
+    func testAddressWithSupportedCountriesWithMatchingPrefill() throws {
         let method = CardPaymentMethod(type: .card, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         var config = CardComponent.Configuration()
         config.billingAddressMode = .full
@@ -1875,7 +1875,7 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context,
                                 configuration: config)
         
-        sut.payment = .init(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "US")
+        try sut.update(payment: .init(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "US"))
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         wait(for: .seconds(1))
@@ -1886,7 +1886,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(countryItemView?.inputControl.label, "United States")
     }
     
-    func testAddressWithSupportedCountriesWithNonMatchingPrefill() {
+    func testAddressWithSupportedCountriesWithNonMatchingPrefill() throws {
         let method = CardPaymentMethod(type: .card, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         var config = CardComponent.Configuration()
         config.billingAddressMode = .full
@@ -1897,7 +1897,7 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context,
                                 configuration: config)
         
-        sut.payment = .init(amount: Amount(value: 100, currencyCode: "GBP"), countryCode: "GB")
+        try sut.update(payment: .init(amount: Amount(value: 100, currencyCode: "GBP"), countryCode: "GB"))
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         wait(for: .seconds(1))
