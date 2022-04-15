@@ -56,11 +56,8 @@ public class CardComponent: PublicKeyConsumer,
         }
     }
 
-    /// The payment information.
-    public var payment: Payment? {
-        didSet {
-            storedCardComponent?.payment = payment
-        }
+    public func update(payment: Payment) throws {
+        try storedCardComponent?.update(payment: payment)
     }
     
     /// Initializes the card component.
@@ -139,13 +136,16 @@ public class CardComponent: PublicKeyConsumer,
         } else {
             component = StoredPaymentMethodComponent(paymentMethod: paymentMethod, apiContext: apiContext)
         }
-        component.payment = payment
+        if let payment = payment {
+            try? component.update(payment: payment)
+        }
         return component
     }()
 
     public func update(storePaymentMethodFieldVisibility isVisible: Bool) {
         cardViewController.update(storePaymentMethodFieldVisibility: isVisible)
     }
+
     // MARK: - Form Items
     
     private lazy var securedViewController = SecuredViewController(child: cardViewController, style: configuration.style)

@@ -82,7 +82,11 @@ extension IntegrationExample {
 
     private func present(_ component: PresentableComponent) {
         if let component = component as? PaymentAwareComponent {
-            component.payment = payment
+            do {
+                try component.update(payment: payment)
+            } catch {
+                finish(with: error)
+            }
         }
 
         if let paymentComponent = component as? PaymentComponent {
