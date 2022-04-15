@@ -123,7 +123,7 @@ extension IntegrationExample {
                       remainingAmount.value > 0 {
                 handle(order)
             } else {
-                finish(with: response.resultCode)
+                finish(with: response)
             }
         case let .failure(error):
             finish(with: error)
@@ -162,7 +162,7 @@ extension IntegrationExample: ActionComponentDelegate {
     }
 
     internal func didComplete(from component: ActionComponent) {
-        finish(with: .authorised)
+        finish(with: .received)
     }
 
     internal func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
