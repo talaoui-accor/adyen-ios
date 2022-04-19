@@ -209,7 +209,9 @@ extension IntegrationExample: PresentationDelegate {
 }
 
 extension IntegrationExample: ApplePayComponentDelegate {
-    func didUpdate(contact: PKContact, with payment: ApplePayPayment, component: ApplePayComponent) -> PKPaymentRequestShippingContactUpdate {
+    func didUpdate(contact: PKContact,
+                   for payment: ApplePayPayment,
+                   with completion: @escaping (PKPaymentRequestShippingContactUpdate) -> Void) {
         var items = payment.summaryItems
         print(items.reduce("> ") { $0 + "| \($1.label): \($1.amount.floatValue.rounded()) " })
         if let last = items.last {
@@ -219,10 +221,12 @@ extension IntegrationExample: ApplePayComponentDelegate {
                                amount: NSDecimalNumber(value: 5.0)))
             items.append(.init(label: last.label, amount: NSDecimalNumber(value: last.amount.floatValue + 5.0)))
         }
-        return .init(paymentSummaryItems: items)
+        completion(.init(paymentSummaryItems: items))
     }
 
-    func didUpdate(shippingMethod: PKShippingMethod, with payment: ApplePayPayment, component: ApplePayComponent) -> PKPaymentRequestShippingMethodUpdate {
+    func didUpdate(shippingMethod: PKShippingMethod,
+                   for payment: ApplePayPayment,
+                   with completion: @escaping (PKPaymentRequestShippingMethodUpdate) -> Void) {
         var items = payment.summaryItems
         print(items.reduce("> ") { $0 + "| \($1.label): \($1.amount.floatValue.rounded()) " })
         if let last = items.last {
@@ -231,11 +235,13 @@ extension IntegrationExample: ApplePayComponentDelegate {
             items.append(.init(label: last.label,
                                amount: NSDecimalNumber(value: last.amount.floatValue + shippingMethod.amount.floatValue)))
         }
-        return .init(paymentSummaryItems: items)
+        completion(.init(paymentSummaryItems: items))
     }
 
     @available(iOS 15.0, *)
-    func didUpdate(couponCode: String, with payment: ApplePayPayment, component: ApplePayComponent) -> PKPaymentRequestCouponCodeUpdate {
+    func didUpdate(couponCode: String,
+                   for payment: ApplePayPayment,
+                   with completion: @escaping (PKPaymentRequestCouponCodeUpdate) -> Void) {
         var items = payment.summaryItems
         print(items.reduce("> ") { $0 + "| \($1.label): \($1.amount.floatValue.rounded()) " })
         if let last = items.last {
@@ -243,7 +249,7 @@ extension IntegrationExample: ApplePayComponentDelegate {
             items.append(.init(label: "Coupon", amount: NSDecimalNumber(value: -5.0)))
             items.append(.init(label: last.label, amount: NSDecimalNumber(value: last.amount.floatValue - 5.0)))
         }
-        return .init(paymentSummaryItems: items)
+        completion(.init(paymentSummaryItems: items))
     }
 
 }
