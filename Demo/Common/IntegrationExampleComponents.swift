@@ -59,7 +59,7 @@ extension IntegrationExample {
     internal func presentApplePayComponent() {
         guard
             let paymentMethod = paymentMethods?.paymentMethod(ofType: ApplePayPaymentMethod.self),
-            let applePayPayment = try? ApplePayPayment(payment: payment)
+            let applePayPayment = try? ApplePayPayment(payment: payment, brand: ConfigurationConstants.appName)
         else { return }
         var config = ApplePayComponent.Configuration(payment: applePayPayment,
                                                      merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier)
@@ -90,11 +90,7 @@ extension IntegrationExample {
 
     private func present(_ component: PresentableComponent) {
         if let component = component as? PaymentAwareComponent {
-            do {
-                try component.update(payment: payment)
-            } catch {
-                finish(with: error)
-            }
+            component.payment = payment
         }
 
         if let paymentComponent = component as? PaymentComponent {

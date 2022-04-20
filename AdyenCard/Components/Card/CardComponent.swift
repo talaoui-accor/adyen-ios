@@ -58,11 +58,10 @@ public class CardComponent: PublicKeyConsumer,
         }
     }
 
-    public var payment: Payment? { persistedPayment }
-
-    public func update(payment: Payment) throws {
-        self.persistedPayment = payment
-        try storedCardComponent?.update(payment: payment)
+    public var payment: Payment? {
+        didSet {
+            storedCardComponent?.payment = payment
+        }
     }
     
     /// Initializes the card component.
@@ -141,9 +140,7 @@ public class CardComponent: PublicKeyConsumer,
         } else {
             component = StoredPaymentMethodComponent(paymentMethod: paymentMethod, apiContext: apiContext)
         }
-        if let payment = payment {
-            try? component.update(payment: payment)
-        }
+        component.payment = payment
         return component
     }()
 
